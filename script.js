@@ -97,9 +97,13 @@ function showQuestion() {
 function selectAnswer(index, btn) {
   answers[current] = index;
 
+  // ★ 他のボタンの selected を外す
   document.querySelectorAll(".choice-btn").forEach(b => b.classList.remove("selected"));
+
+  // ★ 選択したボタンだけ色を付ける
   btn.classList.add("selected");
 }
+
 
 function nextQuestion() {
   // ★ 未回答なら進ませない
