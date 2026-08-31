@@ -144,18 +144,27 @@ function finishQuiz() {
   document.getElementById("result-score").innerText =
     `${username}さんの正解数は ${score} / ${quiz.length} です`;
 
-  // ★ 回答一覧を生成
-  const summaryDiv = document.getElementById("answer-summary");
-  summaryDiv.innerHTML = ""; // 初期化
+// ★ 回答一覧を生成
+const summaryDiv = document.getElementById("answer-summary");
+summaryDiv.innerHTML = ""; // 初期化
 
-  quiz.forEach((q, index) => {
-    const userAnswerIndex = answers[index];
-    const userAnswerText = userAnswerIndex !== undefined ? q.c[userAnswerIndex] : "未回答";
+const labels = ["A", "B", "C", "D"];  // 記号を定義
 
-    const p = document.createElement("p");
-    p.innerHTML = `Q${index + 1}. ${q.q}<br>あなたの回答: ${userAnswerText}`;
-    summaryDiv.appendChild(p);
-  });
+quiz.forEach((q, index) => {
+  const userAnswerIndex = answers[index];
+
+  // 未回答の場合
+  let userAnswerText = "未回答";
+  if (userAnswerIndex !== undefined) {
+    const label = labels[userAnswerIndex];  // ← 記号を取得
+    userAnswerText = `${label}. ${q.c[userAnswerIndex]}`;  // ← 記号＋選択肢
+  }
+
+  const p = document.createElement("p");
+  p.innerHTML = `Q${index + 1}. ${q.q}<br>あなたの回答: ${userAnswerText}`;
+  summaryDiv.appendChild(p);
+});
+
 
   // ★ スプレッドシートへ送信（必要なら残す）
   fetch(API_URL, {
