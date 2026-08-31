@@ -5,16 +5,6 @@ let username = "";
 let current = 0;
 let answers = [];
 
-const labels = ["A", "B", "C", "D"];  // 記号を定義
-
-quiz[current].c.forEach((choice, index) => {
-  const btn = document.createElement("button");
-  btn.className = "choice-btn";
-  btn.textContent = `${labels[index]}. ${choice}`;  // ← 記号を付ける
-  btn.onclick = () => selectAnswer(index, btn);
-  choices.appendChild(btn);
-});
-
 // ★ 10～20問のクイズ（例）
 const quiz = [
   { q: "東京湾アクアラインの「海ほたるパーキングエリア」は海上に浮かぶ人工島にあります。この船の形をした人工島の「全長」はおよそ何メートルでしょうか？", c: ["約350ｍ", "約500ｍ", "約650ｍ", "約800ｍ"], correct: 2 },
@@ -45,8 +35,25 @@ function startQuiz() {
 
 function showQuestion() {
   const q = quiz[current];
+  document.getElementById("question-title").innerText = `Q${current + 1}. ${q.q}`;
 
-  // タイトル
+  const choicesDiv = document.getElementById("choices");
+  choicesDiv.innerHTML = "";
+
+  const labels = ["A", "B", "C", "D"];  // 記号を定義
+
+  q.c.forEach((choice, index) => {
+    const btn = document.createElement("button");
+    btn.className = "choice-btn";
+    btn.textContent = `${labels[index]}. ${choice}`;  // 記号を付ける
+    btn.onclick = () => selectAnswer(index, btn);
+    choicesDiv.appendChild(btn);
+  });
+
+  document.getElementById("next-btn").disabled = true;
+}
+
+// タイトル
   document.getElementById("question-title").innerText = `Q${current + 1}. ${q.q}`;
 
   // 画像エリア
