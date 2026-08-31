@@ -35,37 +35,19 @@ function startQuiz() {
 
 function showQuestion() {
   const q = quiz[current];
-  document.getElementById("question-title").innerText = `Q${current + 1}. ${q.q}`;
 
-  const choicesDiv = document.getElementById("choices");
-  choicesDiv.innerHTML = "";
-
-  const labels = ["A", "B", "C", "D"];  // 記号を定義
-
-  q.c.forEach((choice, index) => {
-    const btn = document.createElement("button");
-    btn.className = "choice-btn";
-    btn.textContent = `${labels[index]}. ${choice}`;  // 記号を付ける
-    btn.onclick = () => selectAnswer(index, btn);
-    choicesDiv.appendChild(btn);
-  });
-
-  document.getElementById("next-btn").disabled = true;
-}
-
-// タイトル
+  // タイトル
   document.getElementById("question-title").innerText = `Q${current + 1}. ${q.q}`;
 
   // 画像エリア
   const imageDiv = document.getElementById("question-image");
-  imageDiv.innerHTML = "";   // ← 前の画像を消す（重要）
+  imageDiv.innerHTML = "";
 
   if (q.img) {
     const img = document.createElement("img");
     img.src = q.img;
     img.classList.add("question-img");
 
-    // 問題ごとのサイズ指定（任意）
     if (q.size) {
       img.style.maxWidth = q.size + "px";
     }
@@ -75,12 +57,14 @@ function showQuestion() {
 
   // 選択肢エリア
   const choicesDiv = document.getElementById("choices");
-  choicesDiv.innerHTML = "";  // ← 前の選択肢を消す
+  choicesDiv.innerHTML = "";
+
+  const labels = ["A", "B", "C", "D"];  // 記号を定義
 
   q.c.forEach((choice, index) => {
     const btn = document.createElement("button");
-    btn.innerText = choice;
     btn.classList.add("choice-btn");
+    btn.textContent = `${labels[index]}. ${choice}`;
 
     if (answers[current] === index) {
       btn.classList.add("selected");
