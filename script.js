@@ -153,17 +153,32 @@ const labels = ["A", "B", "C", "D"];  // 記号を定義
 quiz.forEach((q, index) => {
   const userAnswerIndex = answers[index];
 
-  // 未回答の場合
+  // あなたの回答（記号付き）
   let userAnswerText = "未回答";
   if (userAnswerIndex !== undefined) {
-    const label = labels[userAnswerIndex];  // ← 記号を取得
-    userAnswerText = `${label}. ${q.c[userAnswerIndex]}`;  // ← 記号＋選択肢
+    const userLabel = labels[userAnswerIndex];
+    userAnswerText = `${userLabel}. ${q.c[userAnswerIndex]}`;
   }
 
+  // 正解（記号付き）
+  const correctLabel = labels[q.correct];
+  const correctText = `${correctLabel}. ${q.c[q.correct]}`;
+
+  // 解説文を「正解はC. 約650m。〜」の形式にする
+  const explanationText = q.explanation
+    ? `正解は${correctText}。${q.explanation}`
+    : `正解は${correctText}。`;
+
+  // 表示
   const p = document.createElement("p");
-  p.innerHTML = `Q${index + 1}. ${q.q}<br>あなたの回答: ${userAnswerText}`;
+  p.innerHTML =
+    `Q${index + 1}. ${q.q}<br>` +
+    `あなたの回答: ${userAnswerText}<br>` +
+    `${explanationText}`;
+  
   summaryDiv.appendChild(p);
 });
+
 
 
   // ★ スプレッドシートへ送信（必要なら残す）
