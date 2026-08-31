@@ -169,12 +169,15 @@ quiz.forEach((q, index) => {
     ? `正解は${correctText}。${q.explanation}`
     : `正解は${correctText}。`;
 
+  // ★ 解説文を色付きにする（例：青色）
+  const coloredExplanation = `<span style="color: #0066cc;">${explanationText}</span>`;
+
   // 表示
   const p = document.createElement("p");
   p.innerHTML =
-    `Q${index + 1}. ${q.q}<br><br>` +
-    `<strong>あなたの回答: ${userAnswerText}</strong><br><br>` +   // ★ 太字＋1行下げ
-    `${explanationText}`;
+    `Q${index + 1}. ${q.q}<br><br>` +                     // 問題文の下に1行空ける
+    `<strong>あなたの回答: ${userAnswerText}</strong><br><br>` +  // 太字＋さらに1行空ける
+    `${coloredExplanation}`;                             // ★ 色付き解説文
 
   summaryDiv.appendChild(p);
 });
