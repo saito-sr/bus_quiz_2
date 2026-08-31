@@ -172,7 +172,7 @@ quiz.forEach((q, index) => {
   // 表示
   const p = document.createElement("p");
   p.innerHTML =
-    `Q${index + 1}. ${q.q}<br>` +
+    `Q${index + 1}. ${q.q}<br><br>` +
     `<strong>あなたの回答: ${userAnswerText}</strong><br><br>` +   // ★ 太字＋1行下げ
     `${explanationText}`;
 
