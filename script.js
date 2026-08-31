@@ -164,7 +164,7 @@ quiz.forEach((q, index) => {
   const correctLabel = labels[q.correct];
   const correctText = `${correctLabel}. ${q.c[q.correct]}`;
 
-  // 解説文を「正解はC. 約650m。〜」の形式にする
+  // 解説文（正解＋解説）
   const explanationText = q.explanation
     ? `正解は${correctText}。${q.explanation}`
     : `正解は${correctText}。`;
@@ -173,11 +173,12 @@ quiz.forEach((q, index) => {
   const p = document.createElement("p");
   p.innerHTML =
     `Q${index + 1}. ${q.q}<br>` +
-    `あなたの回答: ${userAnswerText}<br>` +
+    `<strong>あなたの回答: ${userAnswerText}</strong><br><br>` +   // ★ 太字＋1行下げ
     `${explanationText}`;
-  
+
   summaryDiv.appendChild(p);
 });
+
 
 
 
