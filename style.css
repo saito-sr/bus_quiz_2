@@ -28,6 +28,7 @@ button {
   border-radius: 6px;
   border: 1px solid #ccc;
   background-color: #f2f2f2;
+  text-align: left;
 }
 
 /* 選択されたボタン */
