@@ -194,12 +194,7 @@ quiz.forEach((q, index) => {
 });
 
   // ★ スプレッドシートへ送信（必要なら残す）
-  fetch(API_URL, {
-    method: "POST",
-    body: JSON.stringify({
-      name: username,
-      answers: answers,
-      score: score
-    })
-  });
+  fetch(API_URL + "?name=" + encodeURIComponent(username)
+    + "&answers=" + encodeURIComponent(JSON.stringify(answers))
+    + "&score=" + score);
 }
