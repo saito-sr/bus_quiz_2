@@ -87,7 +87,7 @@ function showQuestion() {
   }
 
   const nextBtn = document.createElement("button");
-  nextBtn.innerText = current === quiz.length - 1 ? "回答を送信" : "次へ";
+  nextBtn.innerText = current === quiz.length - 1 ? "回答終了" : "次へ";
   nextBtn.classList.add("nav-btn");
   nextBtn.onclick = nextQuestion;
   navDiv.appendChild(nextBtn);
