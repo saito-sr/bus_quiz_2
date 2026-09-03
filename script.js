@@ -136,6 +136,9 @@ function prevQuestion() {
   showQuestion();
 }
 
+console.log("answers:", answers);
+console.log("answers length:", answers.length);
+
 function finishQuiz() {
   showPage("page-finish");
 
