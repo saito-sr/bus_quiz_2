@@ -193,8 +193,8 @@ quiz.forEach((q, index) => {
   summaryDiv.appendChild(p);
 });
 
-  // ★ スプレッドシートへ送信（必要なら残す）
-  fetch(API_URL + "?name=" + encodeURIComponent(username)
+fetch(API_URL + "?name=" + encodeURIComponent(username)
     + "&answers=" + encodeURIComponent(JSON.stringify(answers))
-    + "&score=" + score);
-}
+    + "&score=" + score, {
+      method: "GET"
+    });
