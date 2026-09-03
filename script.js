@@ -138,10 +138,9 @@ function prevQuestion() {
   showQuestion();
 }
 
-console.log("answers:", answers);
-console.log("answers length:", answers.length);
-
 function finishQuiz() {
+  console.log("answers:", answers);
+  console.log("answers length:", answers.length);  
   showPage("page-finish");
 
   // ★ 正解数を計算
