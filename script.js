@@ -136,8 +136,6 @@ function prevQuestion() {
   showQuestion();
 }
 
-alert("finishQuiz 実行！");
-
 function finishQuiz() {
   showPage("page-finish");
 
