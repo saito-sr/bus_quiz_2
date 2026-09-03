@@ -193,12 +193,9 @@ quiz.forEach((q, index) => {
   summaryDiv.appendChild(p);
 });
 
-fetch(API_URL, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    name: username,
-    answers: answers,
-    score: score
-  })
-});
+fetch(API_URL + "?name=" + encodeURIComponent(username)
+    + "&answers=" + encodeURIComponent(JSON.stringify(answers))
+    + "&score=" + score, {
+      method: "GET",
+      mode: "no-cors"
+    });
