@@ -136,8 +136,7 @@ function prevQuestion() {
   showQuestion();
 }
 
-console.log("送信する answers:", answers);
-console.log("answers の長さ:", answers.length);
+alert("finishQuiz 実行！");
 
 function finishQuiz() {
   showPage("page-finish");
