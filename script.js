@@ -105,6 +105,8 @@ function showQuestion() {
 function selectAnswer(index, btn) {
   answers[current] = index;
 
+  console.log("selected:", current, index, answers);
+  
   // ★ 他のボタンの selected を外す
   document.querySelectorAll(".choice-btn").forEach(b => b.classList.remove("selected"));
 
