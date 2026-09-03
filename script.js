@@ -155,43 +155,38 @@ function finishQuiz() {
   document.getElementById("result-score").innerText =
     `${username}さんの正解数は ${score} / ${quiz.length} です`;
 
-// ★ 回答一覧を生成
-const summaryDiv = document.getElementById("answer-summary");
-summaryDiv.innerHTML = ""; // 初期化
+  // ★ 回答一覧を生成
+  const summaryDiv = document.getElementById("answer-summary");
+  summaryDiv.innerHTML = ""; // 初期化
 
-const labels = ["A", "B", "C", "D"];  // 記号を定義
+  const labels = ["A", "B", "C", "D"];  // 記号を定義
 
-quiz.forEach((q, index) => {
-  const userAnswerIndex = answers[index];
+  quiz.forEach((q, index) => {
+    const userAnswerIndex = answers[index];
 
-  // あなたの回答（記号付き）
-  let userAnswerText = "未回答";
-  if (userAnswerIndex !== undefined) {
-    const userLabel = labels[userAnswerIndex];
-    userAnswerText = `${userLabel}. ${q.c[userAnswerIndex]}`;
-  }
+    let userAnswerText = "未回答";
+    if (userAnswerIndex !== undefined) {
+      const userLabel = labels[userAnswerIndex];
+      userAnswerText = `${userLabel}. ${q.c[userAnswerIndex]}`;
+    }
 
-  // 正解（記号付き）
-  const correctLabel = labels[q.correct];
-  const correctText = `${correctLabel}. ${q.c[q.correct]}`;
+    const correctLabel = labels[q.correct];
+    const correctText = `${correctLabel}. ${q.c[q.correct]}`;
 
-  // 解説文（正解＋解説）
-  const explanationText = q.explanation
-    ? `正解は${correctText}。${q.explanation}`
-    : `正解は${correctText}。`;
+    const explanationText = q.explanation
+      ? `正解は${correctText}。${q.explanation}`
+      : `正解は${correctText}。`;
 
-  // ★ 解説文を色付きにする（例：青色）
-  const coloredExplanation = `<span style="color: #0066cc;">${explanationText}</span>`;
+    const coloredExplanation = `<span style="color: #0066cc;">${explanationText}</span>`;
 
-  // 表示
-  const p = document.createElement("p");
-  p.innerHTML =
-    `Q${index + 1}. ${q.q}<br><br>` +                     // 問題文の下に1行空ける
-    `<strong>あなたの回答: ${userAnswerText}</strong><br><br>` +  // 太字＋さらに1行空ける
-    `${coloredExplanation}`;                             // ★ 色付き解説文
+    const p = document.createElement("p");
+    p.innerHTML =
+      `Q${index + 1}. ${q.q}<br><br>` +
+      `<strong>あなたの回答: ${userAnswerText}</strong><br><br>` +
+      `${coloredExplanation}`;
 
-  summaryDiv.appendChild(p);
-});
+    summaryDiv.appendChild(p);
+  });
 
   // ★ スプレッドシートへ送信
   fetch(API_URL + "?name=" + encodeURIComponent(username)
@@ -200,4 +195,4 @@ quiz.forEach((q, index) => {
         method: "GET",
         mode: "no-cors"
       });
-  }
+}
