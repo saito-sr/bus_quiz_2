@@ -26,7 +26,7 @@ const quiz = [
 　{ q: "？", c: ["", "", "", ""], correct: 0, img: "", explanation: ""},
 　{ q: "？", c: ["", "", "", ""], correct: 0, img: "", explanation: ""},
 　{ q: "？", c: ["", "", "", ""], correct: 0, img: "", explanation: ""},
-　{ q: "？", c: ["", "", "", ""], correct: 0, img: "", explanation: ""},
+　{ q: "？", c: ["選択肢なし", "選択肢なし", "選択肢なし", "選択肢なし"], correct: 0, img: "", explanation: ""},
 ];
 // ページ切り替え
 function showPage(id) {
