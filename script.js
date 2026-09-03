@@ -200,4 +200,4 @@ quiz.forEach((q, index) => {
         method: "GET",
         mode: "no-cors"
       });
-}
+  }
