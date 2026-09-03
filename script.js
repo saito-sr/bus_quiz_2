@@ -191,7 +191,6 @@ function finishQuiz() {
   // ★ スプレッドシートへ送信
   fetch(API_URL, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       name: username,
       answers: answers,
