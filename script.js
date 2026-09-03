@@ -52,7 +52,7 @@ function showQuestion() {
   const q = quiz[current];
 
   // タイトル
-  document.getElementById("question-title").innerText = `Q${current + 1}. ${q.q}`;
+  document.getElementById("question-title").innerHTML = `Q${current + 1}. ${q.q}`;
 
   // 画像エリア
   const imageDiv = document.getElementById("question-image");
