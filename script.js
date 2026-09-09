@@ -164,12 +164,26 @@ function finishQuiz() {
   quiz.forEach((q, index) => {
     const userAnswerIndex = answers[index];
 
+    // あなたの回答（記号付き）
     let userAnswerText = "未回答";
     if (userAnswerIndex !== undefined) {
       const userLabel = labels[userAnswerIndex];
       userAnswerText = `${userLabel}. ${q.c[userAnswerIndex]}`;
     }
 
+    // 正解（記号付き）
+    const correctLabel = labels[q.correct];
+    const correctText = `${correctLabel}. ${q.c[q.correct]}`;
+
+    // 解説文（正解＋解説）
+    const explanationText = q.explanation
+      ? `正解は${correctText}。${q.explanation}`
+      : `正解は${correctText}。`;
+
+    // ★ 色付き解説文
+    const coloredExplanation = `<span style="color: #0066cc;">${explanationText}</span>`;
+
+    // ★ 表示
     const p = document.createElement("p");
     p.innerHTML =
       `Q${index + 1}. ${q.q}<br><br>` +
@@ -182,6 +196,7 @@ function finishQuiz() {
   // ★ スプレッドシートへ送信
   fetch(API_URL, {
     method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       name: username,
       answers: answers,
