@@ -171,24 +171,11 @@ function finishQuiz() {
       userAnswerText = `${userLabel}. ${q.c[userAnswerIndex]}`;
     }
 
-    // 正解（記号付き）
-    const correctLabel = labels[q.correct];
-    const correctText = `${correctLabel}. ${q.c[q.correct]}`;
-
-    // 解説文（正解＋解説）
-    const explanationText = q.explanation
-      ? `正解は${correctText}。${q.explanation}`
-      : `正解は${correctText}。`;
-
-    // ★ 色付き解説文
-    const coloredExplanation = `<span style="color: #0066cc;">${explanationText}</span>`;
-
     // ★ 表示
     const p = document.createElement("p");
     p.innerHTML =
       `Q${index + 1}. ${q.q}<br><br>` +
-      `<strong>あなたの回答: ${userAnswerText}</strong><br><br>` +
-      `${coloredExplanation}`;
+      `<strong>あなたの回答: ${userAnswerText}</strong>`;
 
     summaryDiv.appendChild(p);
   });
