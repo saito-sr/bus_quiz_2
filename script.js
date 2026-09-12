@@ -161,12 +161,17 @@ function toggleImageSelect(index, imgElement) {
   }
 }
 
-function nextQuestion() {
-  // ★ 未回答なら進ませない
+if (q.type === "image-multi") {
+  if (!answers[current] || answers[current].length < 2) {
+    alert("画像を2枚選択してください");
+    return;
+  }
+} else {
   if (answers[current] === undefined) {
     alert("回答を選択してください");
     return;
   }
+}
 
   // ★ 最終問題なら終了ページへ
   if (current >= quiz.length - 1) {
@@ -214,7 +219,6 @@ quiz.forEach((q, index) => {
   }
 });
 
-
   // ★ スコア表示
   document.getElementById("result-score").innerText =
     `${username}さんの正解数は ${score} / ${quiz.length} です`;
@@ -231,9 +235,31 @@ quiz.forEach((q, index) => {
     // あなたの回答（記号付き）
     let userAnswerText = "未回答";
     if (userAnswerIndex !== undefined) {
-      const userLabel = labels[userAnswerIndex];
-      userAnswerText = `${userLabel}. ${q.c[userAnswerIndex]}`;
-    }
+quiz.forEach((q, index) => {
+
+  let userAnswerText = "未回答";
+
+  if (q.type === "image-multi") {
+    const selected = answers[index] || [];
+    userAnswerText = selected.length > 0
+      ? selected.map(i => `画像${i+1}`).join("・")
+      : "未回答";
+
+  } else {
+    const userAnswerIndex = answers[index];
+    if (userAnswerIndex !== undefined) {
+          const userLabel = labels[userAnswerIndex];
+          userAnswerText = `${userLabel}. ${q.c[userAnswerIndex]}`;
+        }
+      }
+    
+      const p = document.createElement("p");
+      p.innerHTML =
+        `Q${index + 1}. ${q.q}<br><br>` +
+        `<strong>あなたの回答: ${userAnswerText}</strong>`;
+    
+      summaryDiv.appendChild(p);
+    });
 
     // ★ 表示
     const p = document.createElement("p");
