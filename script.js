@@ -111,14 +111,6 @@ function showQuestion() {
   const navDiv = document.createElement("div");
   navDiv.classList.add("nav-container");
 
-  if (current > 0) {
-    const prevBtn = document.createElement("button");
-    prevBtn.innerText = "前へ";
-    prevBtn.classList.add("nav-btn");
-    prevBtn.onclick = prevQuestion;
-    navDiv.appendChild(prevBtn);
-  }
-
   const nextBtn = document.createElement("button");
   nextBtn.innerText = current === quiz.length - 1 ? "回答を送信" : "次へ";
   nextBtn.classList.add("nav-btn");
