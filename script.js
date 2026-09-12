@@ -241,13 +241,12 @@ function finishQuiz() {
     summaryDiv.appendChild(p);
   });
 
-  // ★ スプレッドシートへ送信
+  // ★ スプレッドシートへ送信（必要なら残す）
   fetch(API_URL, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       name: username,
-      answers: answers,
+      answers: [...answers],
       score: score
     })
   });
