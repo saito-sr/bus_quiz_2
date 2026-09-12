@@ -43,6 +43,7 @@ const quiz = [
   { q: "？", c: ["", "", "", ""], correct: 0, img: ""},
   { q: "？", c: ["選択肢なし", "選択肢なし", "選択肢なし", "選択肢なし"], correct: 0, img: ""},
 ];
+
 // ページ切り替え
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -81,7 +82,6 @@ function showQuestion() {
       img.src = src;
       img.classList.add("image-choice");
 
-      // 選択状態の反映
       if (answers[current] && answers[current].includes(index)) {
         img.classList.add("selected");
       }
@@ -108,7 +108,7 @@ function showQuestion() {
     });
   }
 
-  // ★ 前へ・次へボタン（既存のまま）
+  // ★ 前へ・次へボタン
   const navDiv = document.createElement("div");
   navDiv.classList.add("nav-container");
 
@@ -132,12 +132,7 @@ function showQuestion() {
 function selectAnswer(index, btn) {
   answers[current] = index;
 
-  console.log("selected:", current, index, answers);
-  
-  // ★ 他のボタンの selected を外す
   document.querySelectorAll(".choice-btn").forEach(b => b.classList.remove("selected"));
-
-  // ★ 選択したボタンだけ色を付ける
   btn.classList.add("selected");
 }
 
@@ -149,11 +144,9 @@ function toggleImageSelect(index, imgElement) {
   const selected = answers[current];
 
   if (selected.includes(index)) {
-    // 選択解除
     answers[current] = selected.filter(i => i !== index);
     imgElement.classList.remove("selected");
   } else {
-    // 選択追加（最大2枚まで）
     if (selected.length < 2) {
       selected.push(index);
       imgElement.classList.add("selected");
@@ -161,19 +154,22 @@ function toggleImageSelect(index, imgElement) {
   }
 }
 
-if (q.type === "image-multi") {
-  if (!answers[current] || answers[current].length < 2) {
-    alert("画像を2枚選択してください");
-    return;
-  }
-} else {
-  if (answers[current] === undefined) {
-    alert("回答を選択してください");
-    return;
-  }
-}
+function nextQuestion() {
+  const q = quiz[current];
 
-  // ★ 最終問題なら終了ページへ
+  // ★ 未回答チェック（画像問題対応）
+  if (q.type === "image-multi") {
+    if (!answers[current] || answers[current].length < 2) {
+      alert("画像を2枚選択してください");
+      return;
+    }
+  } else {
+    if (answers[current] === undefined) {
+      alert("回答を選択してください");
+      return;
+    }
+  }
+
   if (current >= quiz.length - 1) {
     finishQuiz();
     return;
@@ -183,85 +179,62 @@ if (q.type === "image-multi") {
   showQuestion();
 }
 
-
 function prevQuestion() {
   current--;
   showQuestion();
 }
 
 function finishQuiz() {
-  console.log("answers:", answers);
-  console.log("answers length:", answers.length);  
   showPage("page-finish");
 
-// ★ 正解数を計算（4択＋画像問題対応）
-let score = 0;
+  // ★ 正解数を計算（4択＋画像問題対応）
+  let score = 0;
 
-quiz.forEach((q, index) => {
+  quiz.forEach((q, index) => {
+    if (q.type === "image-multi") {
+      const correctSet = new Set(q.correct);
+      const userSet = new Set(answers[index] || []);
 
-  // 画像問題（複数選択）
-  if (q.type === "image-multi") {
-    const correctSet = new Set(q.correct);
-    const userSet = new Set(answers[index] || []);
+      if (
+        correctSet.size === userSet.size &&
+        [...correctSet].every(v => userSet.has(v))
+      ) {
+        score++;
+      }
 
-    if (
-      correctSet.size === userSet.size &&
-      [...correctSet].every(v => userSet.has(v))
-    ) {
-      score++;
+    } else {
+      if (answers[index] === q.correct) {
+        score++;
+      }
     }
+  });
 
-  // 通常の4択問題
-  } else {
-    if (answers[index] === q.correct) {
-      score++;
-    }
-  }
-});
-
-  // ★ スコア表示
   document.getElementById("result-score").innerText =
     `${username}さんの正解数は ${score} / ${quiz.length} です`;
 
-  // ★ 回答一覧を生成
+  // ★ 回答一覧
   const summaryDiv = document.getElementById("answer-summary");
-  summaryDiv.innerHTML = ""; // 初期化
+  summaryDiv.innerHTML = "";
 
-  const labels = ["A", "B", "C", "D"];  // 記号を定義
+  const labels = ["A", "B", "C", "D"];
 
   quiz.forEach((q, index) => {
-    const userAnswerIndex = answers[index];
-
-    // あなたの回答（記号付き）
     let userAnswerText = "未回答";
-    if (userAnswerIndex !== undefined) {
-quiz.forEach((q, index) => {
 
-  let userAnswerText = "未回答";
+    if (q.type === "image-multi") {
+      const selected = answers[index] || [];
+      userAnswerText = selected.length > 0
+        ? selected.map(i => `画像${i+1}`).join("・")
+        : "未回答";
 
-  if (q.type === "image-multi") {
-    const selected = answers[index] || [];
-    userAnswerText = selected.length > 0
-      ? selected.map(i => `画像${i+1}`).join("・")
-      : "未回答";
-
-  } else {
-    const userAnswerIndex = answers[index];
-    if (userAnswerIndex !== undefined) {
-          const userLabel = labels[userAnswerIndex];
-          userAnswerText = `${userLabel}. ${q.c[userAnswerIndex]}`;
-        }
+    } else {
+      const userAnswerIndex = answers[index];
+      if (userAnswerIndex !== undefined) {
+        const userLabel = labels[userAnswerIndex];
+        userAnswerText = `${userLabel}. ${q.c[userAnswerIndex]}`;
       }
-    
-      const p = document.createElement("p");
-      p.innerHTML =
-        `Q${index + 1}. ${q.q}<br><br>` +
-        `<strong>あなたの回答: ${userAnswerText}</strong>`;
-    
-      summaryDiv.appendChild(p);
-    });
+    }
 
-    // ★ 表示
     const p = document.createElement("p");
     p.innerHTML =
       `Q${index + 1}. ${q.q}<br><br>` +
