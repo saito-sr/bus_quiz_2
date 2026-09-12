@@ -74,6 +74,8 @@ button {
 
 .image-choice {
   width: 100%;
+  aspect-ratio: 1 / 1;   /* 正方形にする */
+  object-fit: cover;     /* 中央を基準にトリミング */
   border-radius: 6px;
   cursor: pointer;
   border: 3px solid transparent;
