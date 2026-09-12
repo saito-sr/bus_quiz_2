@@ -27,14 +27,14 @@ const quiz = [
     q: "写真の中から植松支部長を選んでください。",
     type: "image-multi",   // ← 画像問題であることを示す
     images: [
-      "LINE_ALBUM_写真クイズ①_260912_1.jpg",
-      "LINE_ALBUM_写真クイズ①_260912_2.jpg",
-      "LINE_ALBUM_写真クイズ①_260912_3.jpg",
-      "LINE_ALBUM_写真クイズ①_260912_4.jpg",
-      "LINE_ALBUM_写真クイズ①_260912_5.jpg",
-      "LINE_ALBUM_写真クイズ①_260912_6.jpg",
-      "LINE_ALBUM_写真クイズ①_260912_7.jpg",
-      "LINE_ALBUM_写真クイズ①_260912_6.jpg",
+      "images/LINE_ALBUM_写真クイズ①_260912_1.jpg",
+      "images/LINE_ALBUM_写真クイズ①_260912_2.jpg",
+      "images/LINE_ALBUM_写真クイズ①_260912_3.jpg",
+      "images/LINE_ALBUM_写真クイズ①_260912_4.jpg",
+      "images/LINE_ALBUM_写真クイズ①_260912_5.jpg",
+      "images/LINE_ALBUM_写真クイズ①_260912_6.jpg",
+      "images/LINE_ALBUM_写真クイズ①_260912_7.jpg",
+      "images/LINE_ALBUM_写真クイズ①_260912_6.jpg",
     ],
     correct: [5, 7]        // ← 正解画像のインデックス（複数）
   },
