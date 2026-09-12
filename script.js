@@ -66,50 +66,62 @@ function startQuiz() {
 function showQuestion() {
   const q = quiz[current];
 
-  // タイトル
   document.getElementById("question-title").innerHTML = `Q${current + 1}. ${q.q}`;
 
-  // 画像エリア
-  const imageDiv = document.getElementById("question-image");
-  imageDiv.innerHTML = "";
-
-  if (q.img) {
-    const img = document.createElement("img");
-    img.src = q.img;
-    img.classList.add("question-img");
-
-    if (q.size) {
-      img.style.maxWidth = q.size + "px";
-    }
-
-    imageDiv.appendChild(img);
-  }
-
-  // 選択肢エリア
   const choicesDiv = document.getElementById("choices");
   choicesDiv.innerHTML = "";
 
-  const labels = ["A", "B", "C", "D"];  // 記号を定義
+  // ★ 画像問題の場合
+  if (q.type === "image-multi") {
+    const grid = document.createElement("div");
+    grid.classList.add("image-grid");
 
-  q.c.forEach((choice, index) => {
-    const btn = document.createElement("button");
-    btn.classList.add("choice-btn");
-    btn.textContent = `${labels[index]}. ${choice}`;
+    q.images.forEach((src, index) => {
+      const img = document.createElement("img");
+      img.src = src;
+      img.classList.add("image-choice");
 
-    if (answers[current] === index) {
-      btn.classList.add("selected");
-    }
+      // 選択状態の反映
+      if (answers[current] && answers[current].includes(index)) {
+        img.classList.add("selected");
+      }
 
-    btn.onclick = () => selectAnswer(index, btn);
-    choicesDiv.appendChild(btn);
-  });
+      img.onclick = () => toggleImageSelect(index, img);
+      grid.appendChild(img);
+    });
 
-  // ナビゲーション（次へ）
+    choicesDiv.appendChild(grid);
+
+  } else {
+    // ★ 通常の4択問題
+    q.c.forEach((choice, index) => {
+      const btn = document.createElement("button");
+      btn.innerText = choice;
+      btn.classList.add("choice-btn");
+
+      if (answers[current] === index) {
+        btn.classList.add("selected");
+      }
+
+      btn.onclick = () => selectAnswer(index, btn);
+      choicesDiv.appendChild(btn);
+    });
+  }
+
+  // ★ 前へ・次へボタン（既存のまま）
   const navDiv = document.createElement("div");
   navDiv.classList.add("nav-container");
 
+  if (current > 0) {
+    const prevBtn = document.createElement("button");
+    prevBtn.innerText = "前へ";
+    prevBtn.classList.add("nav-btn");
+    prevBtn.onclick = prevQuestion;
+    navDiv.appendChild(prevBtn);
+  }
+
   const nextBtn = document.createElement("button");
-  nextBtn.innerText = current === quiz.length - 1 ? "回答終了" : "次へ";
+  nextBtn.innerText = current === quiz.length - 1 ? "回答を送信" : "次へ";
   nextBtn.classList.add("nav-btn");
   nextBtn.onclick = nextQuestion;
   navDiv.appendChild(nextBtn);
@@ -129,6 +141,25 @@ function selectAnswer(index, btn) {
   btn.classList.add("selected");
 }
 
+function toggleImageSelect(index, imgElement) {
+  if (!answers[current]) {
+    answers[current] = [];
+  }
+
+  const selected = answers[current];
+
+  if (selected.includes(index)) {
+    // 選択解除
+    answers[current] = selected.filter(i => i !== index);
+    imgElement.classList.remove("selected");
+  } else {
+    // 選択追加（最大2枚まで）
+    if (selected.length < 2) {
+      selected.push(index);
+      imgElement.classList.add("selected");
+    }
+  }
+}
 
 function nextQuestion() {
   // ★ 未回答なら進ませない
@@ -158,13 +189,31 @@ function finishQuiz() {
   console.log("answers length:", answers.length);  
   showPage("page-finish");
 
-  // ★ 正解数を計算
-  let score = 0;
-  quiz.forEach((q, index) => {
+// ★ 正解数を計算（4択＋画像問題対応）
+let score = 0;
+
+quiz.forEach((q, index) => {
+
+  // 画像問題（複数選択）
+  if (q.type === "image-multi") {
+    const correctSet = new Set(q.correct);
+    const userSet = new Set(answers[index] || []);
+
+    if (
+      correctSet.size === userSet.size &&
+      [...correctSet].every(v => userSet.has(v))
+    ) {
+      score++;
+    }
+
+  // 通常の4択問題
+  } else {
     if (answers[index] === q.correct) {
       score++;
     }
-  });
+  }
+});
+
 
   // ★ スコア表示
   document.getElementById("result-score").innerText =
