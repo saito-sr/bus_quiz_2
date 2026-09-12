@@ -64,3 +64,21 @@ button {
   margin: 20px auto;   /* 問題文との間に余白を作る */
   border-radius: 8px;
 }
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.image-choice {
+  width: 100%;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 3px solid transparent;
+}
+
+.image-choice.selected {
+  border-color: #4CAF50;
+}
