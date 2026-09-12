@@ -80,7 +80,14 @@ function showQuestion() {
       const img = document.createElement("img");
       img.src = src;
       img.classList.add("image-choice");
-
+      
+      if (src.includes("_1.jpg")) img.style.objectPosition = "center";
+      if (src.includes("_2.jpg")) img.style.objectPosition = "center";
+      if (src.includes("_3.jpg")) img.style.objectPosition = "top";
+      if (src.includes("_4.jpg")) img.style.objectPosition = "center";
+      if (src.includes("_5.jpg")) img.style.objectPosition = "center";
+      if (src.includes("_6.jpg")) img.style.objectPosition = "center";
+      
       if (answers[current] && answers[current].includes(index)) {
         img.classList.add("selected");
       }
