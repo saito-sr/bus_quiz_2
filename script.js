@@ -37,15 +37,15 @@ const quiz = [
     q: "令和8年度の最低賃金周知キャンペーンポスターの写真はどれでしょうか。",
     type: "image-multi",   // ← 画像問題であることを示す
     images: [
-      "images/令和元年.jpeg",
-      "images/令和4年.jpeg",
-      "images/令和8年.jpeg",     
-      "images/令和7年.jpeg",
-      "images/令和5年.jpeg",
-      "images/平成30年.jpeg",
-      "images/令和2年.jpeg",
-      "images/令和6年.jpeg",
-      "images/令和3年.jpeg",
+      "images/最低賃金_2.jpeg",
+      "images/最低賃金_5.jpeg",
+      "images/最低賃金_9.jpeg",     
+      "images/最低賃金_8.jpeg",
+      "images/最低賃金_6.jpeg",
+      "images/最低賃金_1.jpeg",
+      "images/最低賃金_3.jpeg",
+      "images/最低賃金_7.jpeg",
+      "images/最低賃金_4.jpeg",
     ],
     correct: 2        // ← 正解画像のインデックス（複数）
   },
@@ -116,7 +116,17 @@ function showQuestion() {
       if (src.includes("_4.jpg")) img.style.objectPosition = "center";
       if (src.includes("_5.jpg")) img.style.objectPosition = "center";
       if (src.includes("_6.jpg")) img.style.objectPosition = "center";
-  
+      
+      if (src.includes("_1.jpeg")) img.style.objectPosition = "center";
+      if (src.includes("_2.jpeg")) img.style.objectPosition = "center";
+      if (src.includes("_3.jpeg")) img.style.objectPosition = "center";
+      if (src.includes("_4.jpeg")) img.style.objectPosition = "center";
+      if (src.includes("_5.jpeg")) img.style.objectPosition = "center";
+      if (src.includes("_6.jpeg")) img.style.objectPosition = "top";
+      if (src.includes("_7.jpeg")) img.style.objectPosition = "center";    
+      if (src.includes("_8.jpeg")) img.style.objectPosition = "center";
+      if (src.includes("_9.jpeg")) img.style.objectPosition = "center";
+      
       // 選択状態
       if (answers[current] && answers[current].includes(index)) {
         img.classList.add("selected");
