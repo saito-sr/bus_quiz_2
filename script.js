@@ -119,7 +119,7 @@ function showQuestion() {
     choicesDiv.appendChild(grid);
   }
 
-  } else {
+    else {
     // ★ 通常の4択問題（ABCD記号付き）
     const labels = ["A", "B", "C", "D"];  // ← 記号を定義
   
