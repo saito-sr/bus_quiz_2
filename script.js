@@ -202,7 +202,7 @@ function toggleImageSelect(index, imgElement) {
   }
 }
 
- // ★ 未回答チェック（画像問題対応）
+// ★ 未回答チェック（画像問題対応）
 function nextQuestion() {
    const q = quiz[current];
  
