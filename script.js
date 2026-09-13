@@ -86,79 +86,107 @@ function showQuestion() {
   const choicesDiv = document.getElementById("choices");
   choicesDiv.innerHTML = "";
 
-  // ★ 画像問題の場合
+  // ★ 画像複数選択問題（image-multi）
   if (q.type === "image-multi") {
     const grid = document.createElement("div");
     grid.classList.add("image-grid");
-  
-    const labels = ["A", "B", "C", "D", "E", "F", "G", "H", "I"]; // 必要に応じて増やす
-  
+
+    const labels = ["A","B","C","D","E","F","G","H","I"];
+
     q.images.forEach((src, index) => {
-  
-      // 画像＋ラベルをまとめるコンテナ
       const wrapper = document.createElement("div");
       wrapper.classList.add("image-wrapper");
-  
-      // ラベル（左上に重ねる）
+
       const label = document.createElement("div");
       label.classList.add("image-label");
       label.textContent = labels[index];
-  
-      // 画像
+
       const img = document.createElement("img");
       img.src = src;
       img.classList.add("image-choice");
-  
-      // object-position の設定（健さんの既存コードをそのまま反映）
+
+      // object-position の設定
       if (src.includes("_1.jpg")) img.style.objectPosition = "center";
       if (src.includes("_2.jpg")) img.style.objectPosition = "center";
       if (src.includes("_3.jpg")) img.style.objectPosition = "top";
       if (src.includes("_4.jpg")) img.style.objectPosition = "center";
       if (src.includes("_5.jpg")) img.style.objectPosition = "center";
       if (src.includes("_6.jpg")) img.style.objectPosition = "center";
-      
+
       if (src.includes("_1.jpeg")) img.style.objectPosition = "center";
       if (src.includes("_2.jpeg")) img.style.objectPosition = "center";
       if (src.includes("_3.jpeg")) img.style.objectPosition = "center";
       if (src.includes("_4.jpeg")) img.style.objectPosition = "center";
       if (src.includes("_5.jpeg")) img.style.objectPosition = "center";
       if (src.includes("_6.jpeg")) img.style.objectPosition = "top";
-      if (src.includes("_7.jpeg")) img.style.objectPosition = "center";    
+      if (src.includes("_7.jpeg")) img.style.objectPosition = "center";
       if (src.includes("_8.jpeg")) img.style.objectPosition = "center";
       if (src.includes("_9.jpeg")) img.style.objectPosition = "center";
-      
-      // 選択状態
+
       if (answers[current] && answers[current].includes(index)) {
         img.classList.add("selected");
       }
-  
+
       img.onclick = () => toggleImageSelect(index, img);
-  
-      // コンテナに追加
+
       wrapper.appendChild(label);
       wrapper.appendChild(img);
-  
       grid.appendChild(wrapper);
     });
-  
+
     choicesDiv.appendChild(grid);
   }
 
-    else {
-    // ★ 通常の4択問題（ABCD記号付き）
-    const labels = ["A", "B", "C", "D"];  // ← 記号を定義
-  
+  // ★ 画像単一選択問題（image-single）
+  else if (q.type === "image-single") {
+    const grid = document.createElement("div");
+    grid.classList.add("image-grid");
+
+    const labels = ["A","B","C","D","E","F","G","H","I"];
+
+    q.images.forEach((src, index) => {
+      const wrapper = document.createElement("div");
+      wrapper.classList.add("image-wrapper");
+
+      const label = document.createElement("div");
+      label.classList.add("image-label");
+      label.textContent = labels[index];
+
+      const img = document.createElement("img");
+      img.src = src;
+      img.classList.add("image-choice");
+
+      if (answers[current] === index) {
+        img.classList.add("selected");
+      }
+
+      img.onclick = () => {
+        answers[current] = index;
+        document.querySelectorAll(".image-choice").forEach(i => i.classList.remove("selected"));
+        img.classList.add("selected");
+      };
+
+      wrapper.appendChild(label);
+      wrapper.appendChild(img);
+      grid.appendChild(wrapper);
+    });
+
+    choicesDiv.appendChild(grid);
+  }
+
+  // ★ 通常の4択問題
+  else {
+    const labels = ["A", "B", "C", "D"];
+
     q.c.forEach((choice, index) => {
       const btn = document.createElement("button");
       btn.classList.add("choice-btn");
-  
-      // ★ 記号を付ける
       btn.textContent = `${labels[index]}. ${choice}`;
-  
+
       if (answers[current] === index) {
         btn.classList.add("selected");
       }
-  
+
       btn.onclick = () => selectAnswer(index, btn);
       choicesDiv.appendChild(btn);
     });
@@ -179,15 +207,12 @@ function showQuestion() {
 
 function selectAnswer(index, btn) {
   answers[current] = index;
-
   document.querySelectorAll(".choice-btn").forEach(b => b.classList.remove("selected"));
   btn.classList.add("selected");
 }
 
 function toggleImageSelect(index, imgElement) {
-  if (!answers[current]) {
-    answers[current] = [];
-  }
+  if (!answers[current]) answers[current] = [];
 
   const selected = answers[current];
 
@@ -202,44 +227,39 @@ function toggleImageSelect(index, imgElement) {
   }
 }
 
-// ★ 未回答チェック（画像問題対応）
+// ★ 未回答チェック
 function nextQuestion() {
-   const q = quiz[current];
- 
-   // ★ 画像複数選択問題（image-multi）
-   if (q.type === "image-multi") {
-     if (!answers[current] || answers[current].length < 2) {
-       alert("画像を2枚選択してください");
-       return;
-     }
-   }
-  
-   // ★ 画像単一選択問題（image-single）
-   else if (q.type === "image-single") {
-     if (answers[current] === undefined) {
-       alert("画像を1枚選択してください");
-       return;
-     }
-   }
-  
-   // ★ 通常の4択問題など
-   else {
-     if (answers[current] === undefined) {
-       alert("回答を選択してください");
-       return;
-     }
-   }
- 
-    // ★ 最終問題なら終了
-    if (current >= quiz.length - 1) {
-      finishQuiz();
+  const q = quiz[current];
+
+  if (q.type === "image-multi") {
+    if (!answers[current] || answers[current].length < 2) {
+      alert("画像を2枚選択してください");
       return;
     }
-  
-    // ★ 次の問題へ
-    current++;
-    showQuestion();
   }
+
+  else if (q.type === "image-single") {
+    if (answers[current] === undefined) {
+      alert("画像を1枚選択してください");
+      return;
+    }
+  }
+
+  else {
+    if (answers[current] === undefined) {
+      alert("回答を選択してください");
+      return;
+    }
+  }
+
+  if (current >= quiz.length - 1) {
+    finishQuiz();
+    return;
+  }
+
+  current++;
+  showQuestion();
+}
 
 function prevQuestion() {
   current--;
@@ -249,69 +269,32 @@ function prevQuestion() {
 function finishQuiz() {
   showPage("page-finish");
 
-  // ★ 正解数を計算（4択＋画像問題対応）
   let score = 0;
 
   quiz.forEach((q, index) => {
     if (q.type === "image-multi") {
       const correctSet = new Set(q.correct);
       const userSet = new Set(answers[index] || []);
-
-      if (
-        correctSet.size === userSet.size &&
-        [...correctSet].every(v => userSet.has(v))
-      ) {
+      if (correctSet.size === userSet.size && [...correctSet].every(v => userSet.has(v))) {
         score++;
       }
+    }
 
-    } else {
-      if (answers[index] === q.correct) {
-        score++;
-      }
+    else if (q.type === "image-single") {
+      if (answers[index] === q.correct) score++;
+    }
+
+    else {
+      if (answers[index] === q.correct) score++;
     }
   });
 
   document.getElementById("result-score").innerText =
     `${username}さんの正解数は ${score} / ${quiz.length} です`;
 
-  // ★ 回答一覧
   const summaryDiv = document.getElementById("answer-summary");
   summaryDiv.innerHTML = "";
 
-  const labels = ["A", "B", "C", "D"];
+  const labels = ["A","B","C","D"];
 
-  quiz.forEach((q, index) => {
-    let userAnswerText = "未回答";
-
-    if (q.type === "image-multi") {
-      const selected = answers[index] || [];
-      userAnswerText = selected.length > 0
-        ? selected.map(i => `画像${i+1}`).join("・")
-        : "未回答";
-
-    } else {
-      const userAnswerIndex = answers[index];
-      if (userAnswerIndex !== undefined) {
-        const userLabel = labels[userAnswerIndex];
-        userAnswerText = `${userLabel}. ${q.c[userAnswerIndex]}`;
-      }
-    }
-
-    const p = document.createElement("p");
-    p.innerHTML =
-      `Q${index + 1}. ${q.q}<br><br>` +
-      `<strong>あなたの回答: ${userAnswerText}</strong>`;
-
-    summaryDiv.appendChild(p);
-  });
-
-  // ★ スプレッドシートへ送信（必要なら残す）
-  fetch(API_URL, {
-    method: "POST",
-    body: JSON.stringify({
-      name: username,
-      answers: [...answers],
-      score: score
-    })
-  });
-}
+  quiz.forEach
