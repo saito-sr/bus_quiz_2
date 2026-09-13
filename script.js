@@ -202,37 +202,34 @@ function toggleImageSelect(index, imgElement) {
   }
 }
 
+ // ★ 未回答チェック（画像問題対応）
 function nextQuestion() {
-  const q = quiz[current];
-
-  // ★ 未回答チェック（画像問題対応）
-  function nextQuestion() {
-    const q = quiz[current];
+   const q = quiz[current];
+ 
+   // ★ 画像複数選択問題（image-multi）
+   if (q.type === "image-multi") {
+     if (!answers[current] || answers[current].length < 2) {
+       alert("画像を2枚選択してください");
+       return;
+     }
+   }
   
-    // ★ 画像複数選択問題（image-multi）
-    if (q.type === "image-multi") {
-      if (!answers[current] || answers[current].length < 2) {
-        alert("画像を2枚選択してください");
-        return;
-      }
-    }
+   // ★ 画像単一選択問題（image-single）
+   else if (q.type === "image-single") {
+     if (answers[current] === undefined) {
+       alert("画像を1枚選択してください");
+       return;
+     }
+   }
   
-    // ★ 画像単一選択問題（image-single）
-    else if (q.type === "image-single") {
-      if (answers[current] === undefined) {
-        alert("画像を1枚選択してください");
-        return;
-      }
-    }
-  
-    // ★ 通常の4択問題など
-    else {
-      if (answers[current] === undefined) {
-        alert("回答を選択してください");
-        return;
-      }
-    }
-  
+   // ★ 通常の4択問題など
+   else {
+     if (answers[current] === undefined) {
+       alert("回答を選択してください");
+       return;
+     }
+   }
+ 
     // ★ 最終問題なら終了
     if (current >= quiz.length - 1) {
       finishQuiz();
