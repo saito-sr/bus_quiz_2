@@ -35,7 +35,7 @@ const quiz = [
   { q: "令和8年10月1日から適用される千葉県の地域別最低賃金（時間額）はいくらでしょう？", c: ["1,140円", "1,165円", "1,195円", "1,210円"], correct: 2},
   {
     q: "令和8年度の最低賃金周知キャンペーンポスターの写真はどれでしょうか。",
-    type: "image-multi",   // ← 画像問題であることを示す
+    type: "image-single",   // ← 画像問題であることを示す
     images: [
       "images/最低賃金_2.jpeg",
       "images/最低賃金_5.jpeg",
@@ -206,26 +206,43 @@ function nextQuestion() {
   const q = quiz[current];
 
   // ★ 未回答チェック（画像問題対応）
-  if (q.type === "image-multi") {
-    if (!answers[current] || answers[current].length < 2) {
-      alert("画像を2枚選択してください");
+  function nextQuestion() {
+    const q = quiz[current];
+  
+    // ★ 画像複数選択問題（image-multi）
+    if (q.type === "image-multi") {
+      if (!answers[current] || answers[current].length < 2) {
+        alert("画像を2枚選択してください");
+        return;
+      }
+    }
+  
+    // ★ 画像単一選択問題（image-single）
+    else if (q.type === "image-single") {
+      if (answers[current] === undefined) {
+        alert("画像を1枚選択してください");
+        return;
+      }
+    }
+  
+    // ★ 通常の4択問題など
+    else {
+      if (answers[current] === undefined) {
+        alert("回答を選択してください");
+        return;
+      }
+    }
+  
+    // ★ 最終問題なら終了
+    if (current >= quiz.length - 1) {
+      finishQuiz();
       return;
     }
-  } else {
-    if (answers[current] === undefined) {
-      alert("回答を選択してください");
-      return;
-    }
+  
+    // ★ 次の問題へ
+    current++;
+    showQuestion();
   }
-
-  if (current >= quiz.length - 1) {
-    finishQuiz();
-    return;
-  }
-
-  current++;
-  showQuestion();
-}
 
 function prevQuestion() {
   current--;
