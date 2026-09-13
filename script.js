@@ -45,7 +45,7 @@ const quiz = [
       "平成30年.jpeg",
       "令和2年.jpeg",
       "令和6年.jpeg",
-      "令和3.jpeg",
+      "令和3年.jpeg",
     ],
     correct: 2        // ← 正解画像のインデックス（複数）
   },
