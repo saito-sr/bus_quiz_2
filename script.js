@@ -75,28 +75,49 @@ function showQuestion() {
   if (q.type === "image-multi") {
     const grid = document.createElement("div");
     grid.classList.add("image-grid");
-
+  
+    const labels = ["A", "B", "C", "D", "E", "F", "G", "H"]; // 必要に応じて増やす
+  
     q.images.forEach((src, index) => {
+  
+      // 画像＋ラベルをまとめるコンテナ
+      const wrapper = document.createElement("div");
+      wrapper.classList.add("image-wrapper");
+  
+      // ラベル（左上に重ねる）
+      const label = document.createElement("div");
+      label.classList.add("image-label");
+      label.textContent = labels[index];
+  
+      // 画像
       const img = document.createElement("img");
       img.src = src;
       img.classList.add("image-choice");
-      
+  
+      // object-position の設定（健さんの既存コードをそのまま反映）
       if (src.includes("_1.jpg")) img.style.objectPosition = "center";
       if (src.includes("_2.jpg")) img.style.objectPosition = "center";
       if (src.includes("_3.jpg")) img.style.objectPosition = "top";
       if (src.includes("_4.jpg")) img.style.objectPosition = "center";
       if (src.includes("_5.jpg")) img.style.objectPosition = "center";
       if (src.includes("_6.jpg")) img.style.objectPosition = "center";
-      
+  
+      // 選択状態
       if (answers[current] && answers[current].includes(index)) {
         img.classList.add("selected");
       }
-
+  
       img.onclick = () => toggleImageSelect(index, img);
-      grid.appendChild(img);
+  
+      // コンテナに追加
+      wrapper.appendChild(label);
+      wrapper.appendChild(img);
+  
+      grid.appendChild(wrapper);
     });
-
+  
     choicesDiv.appendChild(grid);
+  }
 
   } else {
     // ★ 通常の4択問題（ABCD記号付き）
