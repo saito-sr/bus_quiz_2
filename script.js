@@ -99,16 +99,20 @@ function showQuestion() {
     choicesDiv.appendChild(grid);
 
   } else {
-    // ★ 通常の4択問題
+    // ★ 通常の4択問題（ABCD記号付き）
+    const labels = ["A", "B", "C", "D"];  // ← 記号を定義
+  
     q.c.forEach((choice, index) => {
       const btn = document.createElement("button");
-      btn.innerText = choice;
       btn.classList.add("choice-btn");
-
+  
+      // ★ 記号を付ける
+      btn.textContent = `${labels[index]}. ${choice}`;
+  
       if (answers[current] === index) {
         btn.classList.add("selected");
       }
-
+  
       btn.onclick = () => selectAnswer(index, btn);
       choicesDiv.appendChild(btn);
     });
