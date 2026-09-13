@@ -297,4 +297,44 @@ function finishQuiz() {
 
   const labels = ["A","B","C","D"];
 
-  quiz.forEach
+  quiz.forEach((q, index) => {
+    let userAnswerText = "未回答";
+
+    if (q.type === "image-multi") {
+      const selected = answers[index] || [];
+      userAnswerText = selected.length > 0
+        ? selected.map(i => `画像${i+1}`).join("・")
+        : "未回答";
+    }
+
+    else if (q.type === "image-single") {
+      if (answers[index] !== undefined) {
+        userAnswerText = `画像${answers[index] + 1}`;
+      }
+    }
+
+    else {
+      const userAnswerIndex = answers[index];
+      if (userAnswerIndex !== undefined) {
+        const userLabel = labels[userAnswerIndex];
+        userAnswerText = `${userLabel}. ${q.c[userAnswerIndex]}`;
+      }
+    }
+
+    const p = document.createElement("p");
+    p.innerHTML =
+      `Q${index + 1}. ${q.q}<br><br>` +
+      `<strong>あなたの回答: ${userAnswerText}</strong>`;
+
+    summaryDiv.appendChild(p);
+  });
+
+  fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      name: username,
+      answers: [...answers],
+      score: score
+    })
+  });
+}
