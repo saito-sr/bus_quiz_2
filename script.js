@@ -118,7 +118,7 @@ function showQuestion() {
     });
   }
 
-  // ★ 前へ・次へボタン
+  // ★ 次へボタン
   const navDiv = document.createElement("div");
   navDiv.classList.add("nav-container");
 
