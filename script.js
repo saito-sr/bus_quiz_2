@@ -19,7 +19,7 @@ const quiz = [
       "images/LINE_ALBUM_写真クイズ①_260912_3.jpg",
       "images/LINE_ALBUM_写真クイズ①_260912_4.jpg",
       "images/LINE_ALBUM_写真クイズ①_260912_5.jpg",
-      "images/LINE_ALBUM_写真クイズ①_260912_6.jpg",
+      "images/LINE_ALBUM_写真クイズ①_260916_6.jpg",
       "images/LINE_ALBUM_写真クイズ①_260912_7.jpg",
     ],
     correct: 5        // ← 正解画像のインデックス（複数）
